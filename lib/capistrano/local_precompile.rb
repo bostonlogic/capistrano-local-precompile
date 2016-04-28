@@ -25,16 +25,16 @@ module Capistrano
               run "rm -f #{shared_path}/#{shared_assets_prefix}/manifest*"
             end
 
-            task :cleanup  do
+            task :cleanup, :on_no_matching_servers => :continue  do
               run_locally "rm -rf #{fetch(:assets_dir)}"
             end
 
-            task :prepare  do
+            task :prepare, :on_no_matching_servers => :continue  do
               run_locally "#{fetch(:precompile_cmd)}"
             end
 
             desc "Precompile assets locally and then rsync to app servers"
-            task :precompile do
+            task :precompile, :on_no_matching_servers => :continue do
 
               local_manifest_path = run_locally "ls #{assets_dir}/manifest*"
               local_manifest_path.strip!
