@@ -34,7 +34,7 @@ module Capistrano
             end
 
             desc "Precompile assets locally and then rsync to app servers"
-            task :precompile, :on_no_matching_servers => :continue do
+            task :precompile, :only => { :primary => true }, :on_no_matching_servers => :continue do
 
               local_manifest_path = run_locally "ls #{assets_dir}/manifest*"
               local_manifest_path.strip!
